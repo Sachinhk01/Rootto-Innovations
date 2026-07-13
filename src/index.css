@@ -1,0 +1,334 @@
+:root {
+  /* Brand color system — blues */
+  --green-50: #eaf2fb;
+  --green-100: #d4e6f7;
+  --green-200: #a9ccf0;
+  --green-300: #7eb0e6;
+  --green-400: #4d8fd9;
+  --green-500: #1b56a8;
+  --green-600: #1b56a8;
+  --green-700: #1b56a8;
+  --green-800: #0f3d91;
+  --green-900: #0a2e6e;
+
+  --orange-50: #eaf2fb;
+  --orange-100: #d4e6f7;
+  --orange-200: #a9ccf0;
+  --orange-300: #4d8fd9;
+  --orange-400: #1b56a8;
+  --orange-500: #1b56a8;
+  --orange-600: #0f3d91;
+  --orange-700: #0a2e6e;
+
+  --red-50: #fef3f2;
+  --red-100: #fee4e2;
+  --red-500: #f04438;
+  --red-600: #d92d20;
+  --red-700: #b42318;
+
+  --navy-50: #eaf2fb;
+  --navy-100: #d4e6f7;
+  --navy-200: #b0c2d8;
+  --navy-300: #7d97bb;
+  --navy-400: #4a6a96;
+  --navy-500: #2c476b;
+  --navy-600: #1f3550;
+  --navy-700: #14213d;
+  --navy-800: #14213d;
+  --navy-900: #0a1422;
+
+  --blue-deep: #14213d;
+  --blue-primary: #1b56a8;
+  --blue-royal: #0f3d91;
+  --blue-pale: #eaf2fb;
+  --gold: #fbbf24;
+
+  --neutral-0: #ffffff;
+  --neutral-50: #f9fafb;
+  --neutral-100: #f3f4f6;
+  --neutral-200: #e5e7eb;
+  --neutral-300: #d1d5db;
+  --neutral-400: #9ca3af;
+  --neutral-500: #6b7280;
+  --neutral-600: #4b5563;
+  --neutral-700: #374151;
+  --neutral-800: #1f2937;
+  --neutral-900: #111827;
+
+  --bg-white: #ffffff;
+  --bg-offwhite: #f7f9fc;
+
+  --text-heading: var(--navy-800);
+  --text-body: var(--neutral-700);
+  --text-muted: var(--neutral-500);
+
+  --gradient-cta: linear-gradient(135deg, #1b56a8 0%, #1b56a8 45%, #0f3d91 100%);
+  --gradient-cta-hover: linear-gradient(135deg, #0f3d91 0%, #0a2e6e 100%);
+  --gradient-leaf: linear-gradient(135deg, #1b56a8 0%, #0f3d91 50%, #0a2e6e 100%);
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 12px 32px rgba(16, 24, 40, 0.12);
+  --shadow-xl: 0 24px 48px rgba(16, 24, 40, 0.16);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+
+  --container: 1200px;
+  --container-narrow: 960px;
+
+  --font-heading: "Roboto Slab", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-body);
+  background-color: var(--bg-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-heading);
+  line-height: 1.2;
+  margin: 0 0 0.5em;
+  font-weight: 700;
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+a {
+  color: var(--blue-primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+a:hover {
+  color: var(--blue-royal);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Layout helpers */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section {
+  padding: 88px 0;
+}
+
+.section--offwhite {
+  background-color: var(--bg-offwhite);
+}
+
+.section--white {
+  background-color: var(--bg-white);
+}
+
+.section__head {
+  max-width: 720px;
+  margin: 0 auto 56px;
+  text-align: center;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-primary);
+  margin-bottom: 14px;
+}
+
+.eyebrow--center {
+  text-align: center;
+}
+
+.section__title {
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  margin-bottom: 16px;
+}
+
+.section__subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 26px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: all var(--transition);
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.btn--primary {
+  background: var(--blue-primary);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(27, 86, 168, 0.28);
+}
+
+.btn--primary:hover {
+  background: var(--blue-royal);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(27, 86, 168, 0.36);
+}
+
+.btn--green {
+  background: var(--blue-primary);
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(27, 86, 168, 0.25);
+}
+
+.btn--green:hover {
+  background: var(--blue-royal);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(27, 86, 168, 0.34);
+}
+
+.btn--outline {
+  background: transparent;
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.btn--outline:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: #fff;
+}
+
+.btn--outline-dark {
+  background: transparent;
+  color: var(--blue-deep);
+  border-color: var(--navy-200);
+}
+
+.btn--outline-dark:hover {
+  background: var(--blue-deep);
+  color: #fff;
+  border-color: var(--blue-deep);
+}
+
+.btn--lg {
+  padding: 16px 32px;
+  font-size: 1rem;
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.reveal--left {
+  transform: translateX(-40px);
+}
+
+.reveal.reveal--right {
+  transform: translateX(40px);
+}
+
+.reveal.reveal--scale {
+  transform: scale(0.96);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 64px 0;
+  }
+  .container {
+    padding: 0 20px;
+  }
+}

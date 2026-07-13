@@ -1,0 +1,109 @@
+/* Floating Contact tab — left edge */
+.float-contact {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) translateX(-100%);
+  transform-origin: left center;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px 14px 12px;
+  background: var(--gradient-cta);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  box-shadow: var(--shadow-lg);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  writing-mode: vertical-rl;
+  transition: transform var(--transition), box-shadow var(--transition);
+  animation: floatContactIn 0.6s 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.float-contact:hover {
+  color: #fff;
+  transform: translateY(-50%) translateX(0);
+  box-shadow: var(--shadow-xl);
+}
+
+.float-contact__icon {
+  transform: rotate(180deg);
+  display: inline-flex;
+}
+
+@keyframes floatContactIn {
+  to {
+    transform: translateY(-50%) translateX(0);
+  }
+}
+
+/* WhatsApp floating button — bottom right */
+.float-wa {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+  transition: transform var(--transition), box-shadow var(--transition);
+  animation: floatWaIn 0.5s 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.float-wa:hover {
+  color: #fff;
+  transform: scale(1.08);
+  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+}
+
+.float-wa__pulse {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #25d366;
+  z-index: -1;
+  animation: floatWaPulse 2.4s ease-out infinite;
+}
+
+@keyframes floatWaIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes floatWaPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .float-contact {
+    display: none;
+  }
+  .float-wa {
+    width: 52px;
+    height: 52px;
+    right: 16px;
+    bottom: 16px;
+  }
+}

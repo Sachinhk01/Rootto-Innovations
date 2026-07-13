@@ -1,0 +1,136 @@
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+/* Media */
+.about__media {
+  position: relative;
+}
+
+.about__image-wrap {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: visible;
+}
+
+.about__image-wrap img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.about__badge {
+  position: absolute;
+  right: -24px;
+  bottom: -24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: var(--gradient-cta);
+  color: #fff;
+  text-align: center;
+  box-shadow: var(--shadow-xl);
+  padding: 16px;
+  border: 6px solid #fff;
+}
+
+.about__badge-num {
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.about__badge-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+  line-height: 1.2;
+}
+
+/* Content */
+.about__content {
+  max-width: 540px;
+}
+
+.about__title {
+  font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+  margin-bottom: 20px;
+}
+
+.about__content p {
+  color: var(--text-body);
+  margin-bottom: 16px;
+}
+
+.about__content strong {
+  color: var(--green-700);
+}
+
+.about__rating {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 24px 0 28px;
+  padding: 16px 20px;
+  background: var(--bg-offwhite);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--neutral-200);
+}
+
+.about__stars {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.about__rating-text {
+  font-size: 0.95rem;
+  color: var(--text-body);
+}
+
+.about__rating-text strong {
+  font-size: 1.2rem;
+  color: var(--navy-800);
+  margin-right: 4px;
+}
+
+@media (max-width: 900px) {
+  .about {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+  .about__content {
+    max-width: 100%;
+  }
+  .about__image-wrap img {
+    height: 380px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about__image-wrap img {
+    height: 300px;
+  }
+  .about__badge {
+    width: 120px;
+    height: 120px;
+    right: -12px;
+    bottom: -12px;
+  }
+  .about__badge-num {
+    font-size: 1.9rem;
+  }
+  .about__badge-label {
+    font-size: 0.62rem;
+  }
+}
