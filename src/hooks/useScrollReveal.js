@@ -1,16 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-/**
- * useScrollReveal
- * Observes an element and toggles `is-visible` once it enters the viewport.
- * Fires only once per element (unobserves after triggering).
- *
- * @param {Object} options
- * @param {number} options.threshold  - fraction of element visible to trigger (default 0.18)
- * @param {string} options.rootMargin - root margin (default "0px 0px -40px 0px")
- * @param {boolean} options.once      - unobserve after first reveal (default true)
- * @returns {{ ref, isVisible }}
- */
 export default function useScrollReveal({
   threshold = 0.18,
   rootMargin = "0px 0px -40px 0px",

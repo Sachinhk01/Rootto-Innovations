@@ -1,30 +1,43 @@
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import FloatingActions from "./components/layout/FloatingActions";
-import Hero from "./components/sections/Hero";
-import About from "./components/sections/About";
-import Services from "./components/sections/Services";
-import WhyChooseUs from "./components/sections/WhyChooseUs";
-import Testimonials from "./components/sections/Testimonials";
-import FAQ from "./components/sections/FAQ";
-import Contact from "./components/sections/Contact";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import ScrollProgress from "./components/ScrollProgress";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import ServiceDetail from "./pages/ServiceDetail";
+import Industries from "./pages/Industries";
+import Careers from "./pages/Careers";
+import Contact from "./pages/Contact";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
 function App() {
   return (
-    <> 
-  <Navbar />
-  <main>
-    <Hero />
-    <About />
-    <Services />
-    <WhyChooseUs />
-    <Testimonials />
-    <FAQ />
-    <Contact />
-  </main>
-  <Footer />
-  <FloatingActions />
-    </>
+    <BrowserRouter>
+      <ScrollProgress />
+      <ScrollToTop />
+      <Navbar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/services/:slug" element={<ServiceDetail />} />
+          <Route path="/industries" element={<Industries />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </main>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

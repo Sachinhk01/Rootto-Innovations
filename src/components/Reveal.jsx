@@ -1,14 +1,5 @@
-import useScrollReveal from "../../hooks/useScrollReveal";
+import useScrollReveal from "../hooks/useScrollReveal";
 
-/**
- * Reveal wraps children with a scroll-triggered reveal animation.
- *
- * Props:
- *  - as: element tag (default "div")
- *  - variant: "up" | "left" | "right" | "scale" (default "up")
- *  - delay: ms transition-delay for staggering (default 0)
- *  - className: extra classes
- */
 export default function Reveal({
   as: Tag = "div",
   variant = "up",
