@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { siteConfig } from "../data/siteData";
 import Reveal from "../components/Reveal";
+import Hero from "../components/Hero";
 import Marquee from "../components/Marquee";
 import FAQAccordion from "../components/FAQAccordion";
 
@@ -34,32 +35,7 @@ export default function Home() {
   return (
     <div className="page-fade">
       {/* ── 4.1 Hero ─────────────────────────────────────────── */}
-      <section className="hero">
-        <div className="container hero__inner">
-          <span className="hero__eyebrow">{siteConfig.business.shortLine}</span>
-          <h1 className="hero__headline">
-            <span className="hero__headline-line">Grow smarter.</span>
-            <span className="hero__headline-line">Build stronger.</span>
-            <span className="hero__headline-line">Move faster.</span>
-          </h1>
-          <p className="hero__sub">
-            Your trusted partner for talent, technology, and business growth. We help ambitious
-            organizations hire better, operate smarter, and grow with confidence.
-          </p>
-          <div className="hero__ctas">
-            <Link to="/contact" className="btn btn--primary btn--lg">Start a Conversation</Link>
-            <Link to="/services" className="btn btn--outline btn--lg">Explore Solutions</Link>
-          </div>
-          <div className="hero__stats">
-            {siteConfig.stats.map((stat) => (
-              <div key={stat.label} className="hero__stat-item">
-                <span className="hero__stat-num">{stat.value}</span>
-                <span className="hero__stat-label">{stat.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Hero />
 
       {/* ── 4.2 Who we are ────────────────────────────────────── */}
       <section className="section section--white">

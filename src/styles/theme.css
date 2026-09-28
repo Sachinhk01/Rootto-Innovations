@@ -1,0 +1,16 @@
+/* Design overrides. Loaded after index.css, so anything here wins.
+   Change fonts and headings from this one file. */
+
+:root {
+  /* Modern sans headings (was Roboto Slab, which was never loaded) */
+  --font-heading: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-weight: 800;
+}
