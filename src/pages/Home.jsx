@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { siteConfig } from "../data/siteData";
 import Reveal from "../components/Reveal";
 import Hero from "../components/Hero";
+import HomeSections from "./HomeSections";
 import Marquee from "../components/Marquee";
 import FAQAccordion from "../components/FAQAccordion";
 
@@ -17,25 +18,12 @@ const CheckIcon = () => (
   </svg>
 );
 
-const ServiceIcon = ({ idx }) => {
-  const icons = [
-    <path key="0" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM4 21v-1a8 8 0 0116 0v1" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="1" d="M4 6h16v10H4zM8 20h8M12 16v4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />,
-    <path key="2" d="M4 4h16v6H4zM4 14h16v6H4z" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="3" d="M12 2v20M5 9l7-7 7 7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />,
-    <path key="4" d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="5" d="M4 6h16v12H4zM4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="6" d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5 10-5V7" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />,
-    <path key="7" d="M9 11l3 3 8-8M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />,
-  ];
-  return <svg width="26" height="26" viewBox="0 0 24 24" fill="none">{icons[idx % icons.length]}</svg>;
-};
-
 export default function Home() {
   return (
     <div className="page-fade">
       {/* ── 4.1 Hero ─────────────────────────────────────────── */}
       <Hero />
+      <HomeSections />
 
       {/* ── 4.2 Who we are ────────────────────────────────────── */}
       <section className="section section--white">
@@ -99,32 +87,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 4.3 What we do ───────────────────────────────────── */}
-      <section className="section section--offwhite">
-        <div className="container">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center">What we do</span>
-            <h2 className="section__title">Solutions designed around your growth.</h2>
-            <p className="section__subtitle">
-              One dependable partner for the people, technology, finance, and operational support
-              your business needs.
-            </p>
-          </Reveal>
-          <div className="card-grid">
-            {siteConfig.whatWeDo.map((item, idx) => (
-              <Reveal key={item.title} delay={idx * 90} className="card">
-                <div className="card__icon"><ServiceIcon idx={idx} /></div>
-                <h3 className="card__title">{item.title}</h3>
-                <p className="card__desc">{item.desc}</p>
-                <Link to={item.link} className="card__link">
-                  {item.linkText} <ArrowIcon />
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ── 4.4 Solutions by need ─────────────────────────────── */}
       <section className="section section--white">
         <div className="container">
@@ -162,27 +124,6 @@ export default function Home() {
                 </div>
                 <h3 className="card__title">{item.title}</h3>
                 <p className="card__desc">{item.desc}</p>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4.6 Delivery approach ─────────────────────────────── */}
-      <section className="section section--white">
-        <div className="container container--narrow">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center">Our delivery approach</span>
-            <h2 className="section__title">Five steps from requirement to results.</h2>
-          </Reveal>
-          <div className="steps">
-            {siteConfig.deliveryApproach.map((step, idx) => (
-              <Reveal key={step.title} delay={idx * 120} className={`step ${idx === 0 ? "" : ""}`} as="div">
-                <span className="step__num">{idx + 1}</span>
-                <div className="step__body">
-                  <h3 className="step__title">{step.title}</h3>
-                  <p className="step__desc">{step.desc}</p>
-                </div>
               </Reveal>
             ))}
           </div>
@@ -253,21 +194,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 4.11 CTA banner ───────────────────────────────────── */}
-      <section className="cta-banner">
-        <div className="container cta-banner__inner">
-          <Reveal>
-            <span className="eyebrow eyebrow--light eyebrow--center">Ready to move forward?</span>
-            <h2 className="cta-banner__title">
-              The right people and support can change how your business grows.
-            </h2>
-            <p className="cta-banner__text">
-              Let's discuss your goals and create a solution that works for you.
-            </p>
-            <Link to="/contact" className="btn btn--primary btn--lg">Request a Consultation</Link>
-          </Reveal>
-        </div>
-      </section>
     </div>
   );
 }
