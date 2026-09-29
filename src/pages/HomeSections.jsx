@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import "./HomeSections.css";
+import "./Homesections.css";
 
 const SMALL = [
   ["Technology solutions", "Web · Mobile · Managed IT", "Systems built around how your business actually runs."],

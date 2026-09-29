@@ -6,13 +6,13 @@ const SELECTORS = [
   // home
   ".hm-h2", ".hm-lead", ".hm-card", ".hm-steps li", ".hm-cta",
   // about
-  ".ab-facts", ".ab-story > *", ".ab-h2", ".ab-pillars", ".ab-principles article", ".ab-process li", ".ab-cta",
+  ".ab-hero h1", ".ab-facts", ".ab-story > *", ".ab-h2", ".ab-pillars", ".ab-principles article", ".ab-process li", ".ab-cta",
   // services
-  ".sv-list li", ".sv-btns",
+  ".sv-hero h1", ".sv-list li", ".sv-detail", ".sv-btns",
   // industries
-  ".in-h2", ".in-tile", ".in-note", ".in-approach > div > div", ".in-cta",
+  ".in-hero h1", ".in-h2", ".in-tile", ".in-note", ".in-approach > div > div", ".in-cta",
   // careers
-  ".cr-card",
+  ".cr-head > *", ".cr-card",
   "[data-reveal]",
 ].join(",");
 
@@ -24,7 +24,7 @@ export default function useSiteAnimations() {
     root.classList.add("js-rv");
 
     // ---- scroll reveal (attributes, so React re-renders can't wipe them) ----
-    const io = new IntersectionObserver(
+    const io = typeof IntersectionObserver === "undefined" ? null : new IntersectionObserver(
       (entries) =>
         entries.forEach((e) => {
           if (e.isIntersecting) {
@@ -44,8 +44,8 @@ export default function useSiteAnimations() {
         const n = counts.get(el.parentElement) || 0;
         counts.set(el.parentElement, n + 1);
         el.style.setProperty("--rv-d", `${Math.min(n, 6) * 80}ms`);
-        el.setAttribute("data-rv", "");
-        io.observe(el);
+        el.setAttribute("data-rv", io ? "" : "in");
+        io?.observe(el);
       });
     };
     scan();
@@ -57,25 +57,36 @@ export default function useSiteAnimations() {
     });
     mo.observe(document.body, { childList: true, subtree: true });
 
-    // ---- scroll progress bar + "scrolled" flag for the navbar ----
-    const bar = document.createElement("div");
-    bar.className = "scroll-progress";
-    document.body.appendChild(bar);
-
+    // The existing ScrollProgress component owns the progress bar.
     const onScroll = () => {
-      const max = root.scrollHeight - window.innerHeight;
-      bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
       root.toggleAttribute("data-scrolled", window.scrollY > 8);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
 
+    const updateCardGlow = (event) => {
+      const card = event.target instanceof Element ? event.target.closest(".hm-card") : null;
+      if (!card) return;
+      const bounds = card.getBoundingClientRect();
+      card.style.setProperty("--mx", `${event.clientX - bounds.left}px`);
+      card.style.setProperty("--my", `${event.clientY - bounds.top}px`);
+    };
+    const clearCardGlow = (event) => {
+      const card = event.target instanceof Element ? event.target.closest(".hm-card") : null;
+      if (!card || card.contains(event.relatedTarget)) return;
+      card.style.removeProperty("--mx");
+      card.style.removeProperty("--my");
+    };
+    document.addEventListener("pointermove", updateCardGlow, { passive: true });
+    document.addEventListener("pointerout", clearCardGlow, { passive: true });
+
     return () => {
       cancelAnimationFrame(raf);
-      io.disconnect();
+      io?.disconnect();
       mo.disconnect();
       window.removeEventListener("scroll", onScroll);
-      bar.remove();
+      document.removeEventListener("pointermove", updateCardGlow);
+      document.removeEventListener("pointerout", clearCardGlow);
       root.classList.remove("js-rv");
       root.removeAttribute("data-scrolled");
     };

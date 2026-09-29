@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { siteConfig } from "../data/siteData";
 import Reveal from "../components/Reveal";
 import Hero from "../components/Hero";
-import HomeSections from "./HomeSections";
+import HomeSections from "./Homesections";
 import Marquee from "../components/Marquee";
 import FAQAccordion from "../components/FAQAccordion";
 
