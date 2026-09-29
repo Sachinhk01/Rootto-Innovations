@@ -44,9 +44,15 @@
 .hm-lead figcaption { font-size: 13px; color: #8fb2a0; }
 
 .hm-card {
+  position: relative; overflow: hidden;
   padding: 30px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, .1); background: rgba(255, 255, 255, .04);
   transition: transform .35s cubic-bezier(.3, .8, .2, 1), background .35s, border-color .35s;
 }
+.hm-card::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), rgba(111, 224, 164, .2), transparent 70%);
+}
+.hm-card:hover::before { opacity: 1; }
 .hm-card:hover { transform: translateY(-6px); background: rgba(111, 224, 164, .08); border-color: rgba(111, 224, 164, .4); }
 .hm-dark .hm-card h3 { font: 700 21px var(--display); letter-spacing: -0.015em; margin: 0 0 8px; color: #fff; }
 .hm-card p { margin: 0; color: #b7d3c3; line-height: 1.6; font-size: 15px; }
@@ -57,8 +63,10 @@
 .hm-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px; position: relative; }
 .hm-steps::before {
   content: ""; position: absolute; top: 21px; left: 22px; right: 22px; height: 2px;
-  background: repeating-linear-gradient(90deg, var(--g700) 0 8px, transparent 8px 16px); opacity: .35;
+  background: linear-gradient(90deg, var(--g700) 0 8px, transparent 8px) 0 0 / 16px 2px repeat-x; opacity: .4;
+  animation: hm-march 1.4s linear infinite;
 }
+@keyframes hm-march { to { background-position: 16px 0; } }
 .hm-steps li > span {
   position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
   background: var(--g900); color: var(--mint); font: 700 17px var(--display); margin-bottom: 18px;
@@ -72,8 +80,10 @@
 .hm-cta {
   display: flex; align-items: center; justify-content: space-between; gap: 28px; flex-wrap: wrap;
   padding: 48px 52px; border-radius: 28px; color: #fff;
-  background: radial-gradient(circle at 100% 0%, rgba(111, 224, 164, .25), transparent 55%), linear-gradient(160deg, var(--g800), var(--g950));
+  background: radial-gradient(circle at 100% 0%, rgba(111, 224, 164, .25), transparent 55%) 0 0 / 200% 200%, linear-gradient(160deg, var(--g800), var(--g950));
+  animation: hm-drift 12s ease-in-out infinite alternate;
 }
+@keyframes hm-drift { to { background-position: 100% 100%, 0 0; } }
 .hm-cta h2 { font: 700 clamp(26px, 3.2vw, 38px)/1.1 var(--display); letter-spacing: -0.028em; margin: 0 0 8px; }
 .hm-cta p { margin: 0; color: #b7d3c3; }
 .hm-btns { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -99,5 +109,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hm-dark *, .hm-light *, .hm-cta * { transition: none !important; }
+  .hm-steps::before, .hm-cta { animation: none; }
   .hm-bar i { width: var(--w); }
 }

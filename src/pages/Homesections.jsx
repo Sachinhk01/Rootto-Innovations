@@ -36,6 +36,13 @@ function useInView() {
 export default function HomeSections() {
   const [ref, seen] = useInView();
 
+  // cursor-following glow on the small cards
+  const spot = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+
   return (
     <>
       {/* ---------- services showcase ---------- */}
@@ -64,7 +71,7 @@ export default function HomeSections() {
             </article>
 
             {SMALL.map(([t, tags, d]) => (
-              <article key={t} className="hm-card">
+              <article key={t} className="hm-card" onMouseMove={spot}>
                 <h3>{t}</h3>
                 <p className="hm-tags">{tags}</p>
                 <p>{d}</p>

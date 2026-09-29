@@ -1,0 +1,39 @@
+/* Smooth in-page and anchor scrolling */
+html { scroll-behavior: smooth; }
+
+/* ---------- scroll reveal ----------
+   Hidden state only applies once the hook has run (html.js-rv),
+   so content is never hidden if JavaScript fails. */
+.js-rv [data-rv]:not([data-rv="in"]) { opacity: 0; }
+.js-rv [data-rv="in"] {
+  animation: rv-up .8s cubic-bezier(.2, .8, .2, 1) var(--rv-d, 0ms) backwards;
+}
+@keyframes rv-up {
+  from { opacity: 0; transform: translateY(24px); }
+}
+
+/* ---------- soft page-in when navigating between pages ---------- */
+.ab, .sv, .in, .cr { animation: page-in .5s ease backwards; }
+@keyframes page-in { from { opacity: 0; } }
+
+/* ---------- scroll progress bar ---------- */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 9999;
+  transform-origin: 0 50%; transform: scaleX(0); pointer-events: none;
+  background: linear-gradient(90deg, #067a46, #6fe0a4);
+}
+
+/* ---------- navbar picks up a soft shadow after you scroll ---------- */
+html[data-scrolled] :is(header, .navbar, .site-header) {
+  box-shadow: 0 10px 30px -18px rgba(11, 42, 27, .4);
+}
+:is(header, .navbar, .site-header) { transition: box-shadow .3s ease; }
+
+/* ---------- tactile press on buttons ---------- */
+:where(button, [role="button"], a[class*="btn"]):active { transform: scale(.97); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .scroll-progress { display: none; }
+  .ab, .sv, .in, .cr { animation: none; }
+}

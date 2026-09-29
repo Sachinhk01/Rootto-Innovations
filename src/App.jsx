@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import useSiteAnimations from "./hooks/useSiteAnimations";
+import "./animations.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ScrollProgress from "./components/ScrollProgress";
@@ -21,6 +23,8 @@ function ScrollToTop() {
 }
 
 function App() {
+  useSiteAnimations();
+
   return (
     <BrowserRouter>
       <ScrollProgress />
