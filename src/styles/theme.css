@@ -1,10 +1,51 @@
 /* Design overrides. Loaded after index.css, so anything here wins.
-   Change fonts and headings from this one file. */
+   Brand colour comes from the logo: #077643
+   Change fonts, colours and headings from this one file. */
 
 :root {
-  /* Modern sans headings (was Roboto Slab, which was never loaded) */
+  /* ── Fonts ─────────────────────────────────────────────────── */
   --font-heading: "Plus Jakarta Sans", "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* ── Brand green (600 = logo colour) ───────────────────────── */
+  --brand:     #077643;
+  --green-50:  #f0faf5;
+  --green-100: #dbf5e9;
+  --green-200: #b8ead3;
+  --green-300: #85d6b1;
+  --green-400: #3ec48a;
+  --green-500: #12a562;
+  --green-600: #077643;
+  --green-700: #066037;
+  --green-800: #06492a;
+  --green-900: #05301c;
+
+  /* ── Deep green (replaces the old navy, used for headings and dark sections) */
+  --navy-50:  #f3f7f5;
+  --navy-100: #e3ede8;
+  --navy-200: #c9d9d2;
+  --navy-300: #a1baae;
+  --navy-400: #6e9181;
+  --navy-500: #4c7663;
+  --navy-600: #285d44;
+  --navy-700: #184932;
+  --navy-800: #0f3323;
+  --navy-900: #091e14;
+
+  /* ── Accent (was orange) now light green so the site stays one colour */
+  --orange-300: #85d6b1;
+  --orange-400: #3ec48a;
+  --orange-500: #12a562;
+
+  /* ── Backgrounds with a faint green tint instead of blue-grey */
+  --bg-offwhite: #f6faf8;
+  --bg-soft:     #eef6f2;
+
+  /* ── Gradients ─────────────────────────────────────────────── */
+  --gradient-cta:       linear-gradient(135deg, #077643 0%, #066037 100%);
+  --gradient-cta-hover: linear-gradient(135deg, #066037 0%, #06492a 100%);
+  --gradient-navy:      linear-gradient(160deg, #06492a 0%, #05301c 100%);
+  --gradient-hero:      linear-gradient(125deg, #077643 0%, #06492a 55%, #05301c 100%);
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -13,4 +54,41 @@ h1, h2, h3, h4, h5, h6 {
 
 h2 {
   font-weight: 800;
+}
+
+/* ── Logo (wordmark) ───────────────────────────────────────── */
+.logo__img {
+  height: clamp(32px, 4vw, 40px);
+  width: auto;
+}
+.logo--light .logo__img { height: clamp(44px, 5vw, 56px); }
+
+/* Footer sits on dark green, so the green logo is turned white */
+.footer__brand .logo__img { filter: brightness(0) invert(1); }
+
+/* ── Colours that were hard-coded in index.css ─────────────── */
+.btn--primary { box-shadow: 0 6px 18px rgba(7, 118, 67, .28); }
+.btn--primary:hover { box-shadow: 0 10px 24px rgba(7, 118, 67, .36); }
+
+.navbar__mobile { background: rgba(5, 30, 20, .5); }
+
+.hero::before { background: radial-gradient(circle, rgba(7, 118, 67, .15) 0%, transparent 70%); }
+.hero::after  { background: radial-gradient(circle, rgba(15, 51, 35, .2) 0%, transparent 70%); }
+.cta-banner::before { background: radial-gradient(circle, rgba(7, 118, 67, .12) 0%, transparent 70%); }
+
+.form__field input:focus,
+.form__field select:focus,
+.form__field textarea:focus {
+  box-shadow: 0 0 0 3px rgba(7, 118, 67, .14);
+}
+
+/* Primary button on the green CTA banner: white so it stands out */
+.cta-banner .btn--primary {
+  background: #fff;
+  color: var(--green-700);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+}
+.cta-banner .btn--primary:hover {
+  background: var(--green-50);
+  color: var(--green-800);
 }

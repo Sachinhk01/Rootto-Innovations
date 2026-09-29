@@ -41,9 +41,9 @@ export default function Hero() {
             {siteConfig.business.shortLine}
           </span>
           <h1 className="hero2__title">
-            <span className="hero2__line">Grow smarter.</span>
-            <span className="hero2__line">Build stronger.</span>
-            <span className="hero2__line hero2__line--accent">Move faster.</span>
+            <span className="hero2__line">Grow Smarter</span>
+            <span className="hero2__line">Build Stronger</span>
+            <span className="hero2__line hero2__line--accent">Move Faster</span>
           </h1>
           <p className="hero2__sub">
             Your trusted partner for talent, technology, and business growth. We help ambitious

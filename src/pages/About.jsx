@@ -1,117 +1,169 @@
+import { Fragment, useState } from "react";
 import { Link } from "react-router-dom";
-import { siteConfig } from "../data/siteData";
-import Reveal from "../components/Reveal";
+import "./About.css";
 
-const ArrowIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const FACTS = [
+  ["Business", "IT Services & Consulting"],
+  ["Headquarters", "Bengaluru, Karnataka"],
+  ["Founded", "2021"],
+];
+
+const PILLARS = [
+  {
+    name: "Technology",
+    line: "Systems that fit the way your business actually runs.",
+    items: ["IT services and consulting", "Technical training", "Managed business solutions"],
+  },
+  {
+    name: "Talent",
+    line: "Skilled people, sourced and screened for your teams.",
+    items: ["Staffing and recruitment", "Workforce consulting", "HR operations"],
+  },
+  {
+    name: "Trust",
+    line: "Books, payroll and compliance handled in the open.",
+    items: ["Accounting and taxation", "Payroll outsourcing", "Compliance support"],
+  },
+];
+
+const PRINCIPLES = [
+  ["Business-focused", "Solutions designed around your outcomes, not just services."],
+  ["Agile and scalable", "Flexible capacity that adapts as your requirements change."],
+  ["Specialized talent", "Focused sourcing across technology and business functions."],
+  ["Integrated services", "Technology, staffing, operations, accounting and compliance under one partner."],
+  ["Execution discipline", "Structured screening, coordination and delivery governance."],
+  ["Long-term partnership", "Built on transparency, responsiveness and sustainable relationships."],
+];
+
+const STEPS = [
+  ["Understand", "We start with your goals, constraints and the people involved."],
+  ["Plan", "A clear scope, timeline and owner for every piece of work."],
+  ["Deliver", "Screened talent and working solutions, coordinated end to end."],
+  ["Support", "We stay on after delivery to keep things running and improving."],
+];
+
+const HEADLINE = ["Empowering", "businesses", "with", "technology,", "talent", "&", "trust"];
 
 export default function About() {
+  const [open, setOpen] = useState(0);
+
   return (
-    <div className="page-fade">
-      <section className="page-header">
-        <div className="container">
-          <Reveal>
-            <h1 className="page-header__title">Empowering Businesses with Technology, Talent &amp; Trust</h1>
-            <p className="page-header__subtitle">
-              Founded in 2021 and headquartered in Bengaluru, Roottoo Innovation is an IT Services
-              and Business Consulting company.
-            </p>
-          </Reveal>
+    <main className="ab">
+      {/* ---------- hero ---------- */}
+      <section className="ab-hero">
+        <div className="ab-wrap">
+          <h1 aria-label={HEADLINE.join(" ")}>
+            {HEADLINE.map((w, i) => (
+              <Fragment key={i}>
+                <span className="ab-w" style={{ "--i": i }} aria-hidden="true">
+                  <span>{w}</span>
+                </span>{" "}
+              </Fragment>
+            ))}
+          </h1>
+          <p>
+            Founded in 2021 and headquartered in Bengaluru, Roottoo Innovation is an IT services
+            and business consulting company.
+          </p>
         </div>
       </section>
 
-      <section className="section section--white">
-        <div className="container container--narrow">
-          <Reveal>
-            <p>
-              We help businesses streamline operations, build skilled teams and adopt
-              technology-driven solutions for sustainable growth.
-            </p>
-            <p>
-              Our approach combines industry experience, practical execution and scalable delivery.
-            </p>
-            <p>
-              We build long-term partnerships through technology, talent and trust.
-            </p>
-
-            <div className="info-cards">
-              <div className="info-card">
-                <div className="info-card__label">Business</div>
-                <div className="info-card__value">IT Services &amp; Consulting</div>
-              </div>
-              <div className="info-card">
-                <div className="info-card__label">Headquarters</div>
-                <div className="info-card__value">Bengaluru, Karnataka</div>
-              </div>
-              <div className="info-card">
-                <div className="info-card__label">Founded</div>
-                <div className="info-card__value">2021</div>
-              </div>
+      {/* ---------- facts ---------- */}
+      <section className="ab-wrap ab-facts-wrap">
+        <dl className="ab-facts">
+          {FACTS.map(([k, v]) => (
+            <div key={k}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
             </div>
-          </Reveal>
+          ))}
+        </dl>
+      </section>
+
+      {/* ---------- story ---------- */}
+      <section className="ab-wrap ab-story">
+        <h2>We help businesses run better, hire better and grow steadily.</h2>
+        <div>
+          <p>We help businesses streamline operations, build skilled teams and adopt technology-driven solutions for sustainable growth.</p>
+          <p>Our approach combines industry experience, practical execution and scalable delivery.</p>
+          <p>We build long-term partnerships through technology, talent and trust.</p>
         </div>
       </section>
 
-      {/* Why Roottoo Innovation */}
-      <section className="section section--offwhite">
-        <div className="container">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center">Why Roottoo Innovation</span>
-            <h2 className="section__title">Built around outcomes, not just services.</h2>
-          </Reveal>
-          <div className="card-grid">
-            {siteConfig.whyChooseUs.map((item, idx) => (
-              <Reveal key={item.title} delay={idx * 90} className={`card ${idx === 0 ? "card--accent" : ""}`}>
-                <div className="card__icon">
-                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5 10-5V7" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <h3 className="card__title">{item.title}</h3>
-                <p className="card__desc">{item.desc}</p>
-              </Reveal>
+      {/* ---------- pillars ---------- */}
+      <section className="ab-wrap ab-pillars-sec">
+        <h2 className="ab-h2">Three things we do well</h2>
+        <div className="ab-pillars" style={{ "--open": open }}>
+          {PILLARS.map((p, i) => (
+            <div
+              key={p.name}
+              role="button"
+              tabIndex={0}
+              className={`ab-pillar ${open === i ? "on" : ""}`}
+              aria-expanded={open === i}
+              onClick={() => setOpen(i)}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), setOpen(i))}
+              onMouseEnter={() => window.matchMedia("(hover: hover)").matches && setOpen(i)}
+            >
+              <span className="ab-pname">{p.name}</span>
+              <span className="ab-pline">{p.line}</span>
+              <ul>
+                {p.items.map((it) => <li key={it}>{it}</li>)}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- principles ---------- */}
+      <section className="ab-band">
+        <div className="ab-wrap">
+          <h2 className="ab-h2">Built around outcomes, not just services</h2>
+          <div className="ab-principles">
+            {PRINCIPLES.map(([t, d]) => (
+              <article key={t}>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Delivery approach */}
-      <section className="section section--white">
-        <div className="container container--narrow">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center">Our delivery approach</span>
-            <h2 className="section__title">Five steps from requirement to results.</h2>
-          </Reveal>
-          <div className="steps">
-            {siteConfig.deliveryApproach.map((step, idx) => (
-              <Reveal key={step.title} delay={idx * 120} as="div" className="step">
-                <span className="step__num">{idx + 1}</span>
-                <div className="step__body">
-                  <h3 className="step__title">{step.title}</h3>
-                  <p className="step__desc">{step.desc}</p>
-                </div>
-              </Reveal>
-            ))}
+      {/* ---------- process ---------- */}
+      <section className="ab-wrap ab-process">
+        <h2 className="ab-h2">How we deliver</h2>
+        <ol>
+          {STEPS.map(([t, d], i) => (
+            <li key={t}>
+              <span className="ab-n">{i + 1}</span>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---------- CTA ---------- */}
+      <section className="ab-wrap">
+        <div className="ab-cta">
+          <div>
+            <h2>Have a requirement in mind?</h2>
+            <p>Tell us what you need. We're reachable any time of day.</p>
+          </div>
+          <div className="ab-cta-btns">
+            <Link to="/contact" className="ab-btn solid">Send an enquiry</Link>
+            <a
+              href="https://wa.me/918147394287"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ab-btn line"
+            >
+              Chat on WhatsApp
+            </a>
           </div>
         </div>
       </section>
-
-      {/* Footer strip */}
-      <section className="section--soft" style={{ padding: "48px 0" }}>
-        <div className="container text-center">
-          <Reveal>
-            <p style={{ fontSize: "1.1rem", color: "var(--navy-700)", fontWeight: 600, marginBottom: "20px" }}>
-              Pan-India delivery with expanding operations
-            </p>
-            <Link to="/contact" className="btn btn--primary btn--lg">
-              Request a Consultation <ArrowIcon />
-            </Link>
-          </Reveal>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

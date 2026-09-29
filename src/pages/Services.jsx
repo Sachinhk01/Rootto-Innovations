@@ -1,125 +1,139 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { siteConfig } from "../data/siteData";
-import { services } from "../data/services";
-import Reveal from "../components/Reveal";
+import "./Services.css";
 
-const ArrowIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const CATS = ["All", "Technology", "Talent", "Finance & compliance", "Workspace"];
 
-const CheckIcon = () => (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-    <path d="M5 12l5 5 9-10" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
-
-const groups = siteConfig.serviceDropdownGroups;
+const SERVICES = [
+  {
+    name: "IT services and consulting", cat: "Technology",
+    summary: "Practical technology advice and delivery, so your systems support the business instead of slowing it down.",
+    gets: ["Technology assessment and roadmap", "Solution design and implementation", "Ongoing support and improvement"],
+    fit: "Growing businesses modernising their tools and processes",
+  },
+  {
+    name: "Technical training", cat: "Technology",
+    summary: "Hands-on training that gets teams and new hires productive on the tools they'll actually use.",
+    gets: ["Role-based training programmes", "Practical, project-style learning", "Progress checks for managers"],
+    fit: "Teams onboarding freshers or adopting new technology",
+  },
+  {
+    name: "Managed business solutions", cat: "Technology",
+    summary: "We run defined business functions for you, with clear ownership and regular reporting.",
+    gets: ["Dedicated delivery coordination", "Agreed service levels and reporting", "Scale up or down as needed"],
+    fit: "Companies that want to focus on core work",
+  },
+  {
+    name: "Staffing and recruitment", cat: "Talent",
+    summary: "Skilled professionals sourced, screened and presented against your brief. Permanent or contract.",
+    gets: ["Structured sourcing and screening", "Shortlists matched to your requirement", "Support through offer and joining"],
+    fit: "Teams hiring across technology and business roles",
+  },
+  {
+    name: "Workforce consulting", cat: "Talent",
+    summary: "Advice on team structure, hiring plans and capacity, so you hire for what the business needs next.",
+    gets: ["Workforce planning support", "Role and skills mapping", "Hiring model recommendations"],
+    fit: "Leaders planning growth or restructuring",
+  },
+  {
+    name: "HR operations", cat: "Talent",
+    summary: "The day-to-day HR work handled consistently, from onboarding to records and policies.",
+    gets: ["Onboarding and documentation", "Employee records and policy support", "Process set-up and upkeep"],
+    fit: "Small and mid-sized teams without a full HR department",
+  },
+  {
+    name: "Accounting and taxation", cat: "Finance & compliance",
+    summary: "Accurate books and timely tax filings, explained in plain language.",
+    gets: ["Bookkeeping and reporting", "Tax planning and filing", "Clear, regular updates"],
+    fit: "Businesses that want their finances in order",
+  },
+  {
+    name: "Payroll outsourcing", cat: "Finance & compliance",
+    summary: "On-time, accurate payroll with statutory deductions handled for you.",
+    gets: ["Monthly payroll processing", "Statutory deductions and filings", "Payslips and employee queries"],
+    fit: "Companies tired of running payroll in-house",
+  },
+  {
+    name: "Compliance support", cat: "Finance & compliance",
+    summary: "Stay on top of the filings and deadlines that apply to your business.",
+    gets: ["Compliance calendar and reminders", "Filing preparation and support", "Documentation kept ready"],
+    fit: "Businesses that can't afford to miss a deadline",
+  },
+  {
+    name: "Co-working space", cat: "Workspace",
+    summary: "Flexible workspace in Bengaluru for teams and independent professionals.",
+    gets: ["Flexible seating options", "Meeting and collaboration space", "A professional business address"],
+    fit: "Startups and small teams who don't want a long lease",
+  },
+];
 
 export default function Services() {
+  const [cat, setCat] = useState("All");
+  const [sel, setSel] = useState(SERVICES[0].name);
+
+  const list = SERVICES.filter((s) => cat === "All" || s.cat === cat);
+  const active = list.find((s) => s.name === sel) || list[0];
+  const wa = `https://wa.me/918147394287?text=${encodeURIComponent(
+    `Hi Roottoo, I'd like to know more about ${active.name}.`
+  )}`;
+
   return (
-    <div className="page-fade">
-      <section className="page-header">
-        <div className="container">
-          <Reveal>
-            <h1 className="page-header__title">Solutions designed around your growth.</h1>
-            <p className="page-header__subtitle">
-              Eight service groups covering the people, technology, finance, and operational
-              support your business needs.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 8 group sections */}
-      {groups.map((group, groupIdx) => {
-        const groupServices = services.filter((s) => s.group === group.label);
-        return (
-          <section
-            key={group.label}
-            className={groupIdx % 2 === 0 ? "section section--white" : "section section--offwhite"}
-          >
-            <div className="container">
-              <Reveal className="section__head section__head--left">
-                <span className="eyebrow">{group.label}</span>
-                <h2 className="section__title">{group.label}</h2>
-              </Reveal>
-              <div className="card-grid">
-                {groupServices.map((service, idx) => (
-                  <Reveal key={service.slug} delay={idx * 100} className="card">
-                    <h3 className="card__title">{service.title}</h3>
-                    <p className="card__desc">{service.value}</p>
-                    <Link to={`/services/${service.slug}`} className="card__link">
-                      Learn More <ArrowIcon />
-                    </Link>
-                  </Reveal>
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })}
-
-      {/* Business support by stage */}
-      <section className="section section--navy">
-        <div className="container">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center eyebrow--light">Business support by stage</span>
-            <h2 className="section__title">Support for every stage of your business.</h2>
-          </Reveal>
-          <div className="card-grid">
-            {siteConfig.businessSupportByStage.map((item, idx) => (
-              <Reveal key={item.title} delay={idx * 90} className="card" >
-                <h3 className="card__title" style={{ color: "#fff" }}>{item.title}</h3>
-                <p className="card__desc" style={{ color: "rgba(255,255,255,.7)" }}>{item.desc}</p>
-              </Reveal>
+    <main className="sv">
+      <section className="sv-hero">
+        <div className="sv-wrap">
+          <h1>One partner for technology, talent and the back office.</h1>
+          <p>Pick a service to see what's included and who it suits.</p>
+          <div className="sv-chips" role="group" aria-label="Filter services">
+            {CATS.map((c) => (
+              <button
+                key={c}
+                type="button"
+                className={cat === c ? "on" : ""}
+                aria-pressed={cat === c}
+                onClick={() => setCat(c)}
+              >
+                {c}
+              </button>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Packages */}
-      <section className="section section--offwhite">
-        <div className="container">
-          <Reveal className="section__head">
-            <span className="eyebrow eyebrow--center">Service packages</span>
-            <h2 className="section__title">Bundled solutions for common needs.</h2>
-          </Reveal>
-          <div className="card-grid">
-            {siteConfig.packages.map((pkg, idx) => (
-              <Reveal key={pkg.title} delay={idx * 90} className="package-card">
-                <h3 className="package-card__title">{pkg.title}</h3>
-                <p className="package-card__sub">{pkg.sub}</p>
-                <ul className="package-card__list">
-                  {pkg.items.map((item) => (
-                    <li key={item}>
-                      <span className="check-list__check" aria-hidden="true" style={{ width: "18px", height: "18px" }}>
-                        <CheckIcon />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link to="/contact" className="card__link" style={{ marginTop: "16px" }}>
-                  Enquire about this package <ArrowIcon />
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section className="sv-wrap sv-body">
+        <ul className="sv-list">
+          {list.map((s) => (
+            <li key={s.name}>
+              <button
+                type="button"
+                className={s.name === active.name ? "on" : ""}
+                aria-current={s.name === active.name}
+                onClick={() => setSel(s.name)}
+              >
+                <span>{s.name}</span>
+                <small>{s.cat}</small>
+              </button>
+            </li>
+          ))}
+        </ul>
 
-      {/* CTA */}
-      <section className="cta-banner">
-        <div className="container cta-banner__inner">
-          <Reveal>
-            <h2 className="cta-banner__title">Not sure which service you need?</h2>
-            <p className="cta-banner__text">Let's discuss your goals and create a solution that works for you.</p>
-            <Link to="/contact" className="btn btn--primary btn--lg">Request a Consultation</Link>
-          </Reveal>
-        </div>
+        <article key={active.name} className="sv-detail">
+          <span className="sv-tag">{active.cat}</span>
+          <h2>{active.name}</h2>
+          <p className="sv-sum">{active.summary}</p>
+
+          <h3>What you get</h3>
+          <ul>
+            {active.gets.map((g) => <li key={g}>{g}</li>)}
+          </ul>
+
+          <p className="sv-fit"><strong>Works well for:</strong> {active.fit}</p>
+
+          <div className="sv-btns">
+            <Link to="/contact" className="sv-btn solid">Send an enquiry</Link>
+            <a href={wa} target="_blank" rel="noopener noreferrer" className="sv-btn line">Ask on WhatsApp</a>
+          </div>
+        </article>
       </section>
-    </div>
+    </main>
   );
 }

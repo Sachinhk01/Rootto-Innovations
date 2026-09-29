@@ -1,263 +1,255 @@
-import { useState } from "react";
-import { siteConfig } from "../data/siteData";
-import Reveal from "../components/Reveal";
+import { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
+import "./Careers.css";
 
-const INITIAL_HIRE = {
-  company: "",
-  contactPerson: "",
-  email: "",
-  phone: "",
-  role: "",
-  positions: "",
-  location: "",
-  hiringType: "",
-  details: "",
+const MODES = {
+  employer: {
+    tab: "I'm hiring",
+    title: "Tell us who you need",
+    blurb:
+      "Share the role and we'll come back with screened candidates, not a pile of CVs.",
+    steps: [
+      ["You send the requirement", "Takes about two minutes."],
+      ["We shortlist", "Sourced and assessed against your brief."],
+      ["You interview, we onboard", "Offer, joining and paperwork handled."],
+    ],
+    cta: "Send hiring requirement",
+    doneTitle: "Requirement received",
+    doneText: "Our team will call or email you shortly to confirm the details.",
+    templateEnv: "VITE_EMAILJS_TEMPLATE_ID_EMPLOYER",
+    fields: [
+      { name: "company", label: "Company name", half: true, req: true },
+      { name: "contact_person", label: "Contact person", half: true, req: true },
+      { name: "from_email", label: "Email", type: "email", half: true, req: true },
+      { name: "phone", label: "Phone", type: "tel", half: true, req: true },
+      { name: "role", label: "Role to fill", half: true, req: true },
+      { name: "positions", label: "Number of positions", type: "number", half: true, min: 1 },
+      { name: "location", label: "Job location", half: true },
+      {
+        name: "hiring_type", label: "Hiring type", type: "select", half: true,
+        options: ["Permanent", "Contract", "Contract-to-hire", "Internship"],
+      },
+      { name: "message", label: "Details about the role", type: "textarea" },
+    ],
+  },
+  seeker: {
+    tab: "I'm job hunting",
+    title: "Show us what you do best",
+    blurb:
+      "Upload your resume once. We match you with openings that fit your skills and location.",
+    steps: [
+      ["You share your resume", "PDF or Word, up to 2 MB."],
+      ["We review your profile", "Matched with roles that fit you."],
+      ["We connect you", "You hear from us when there's a match."],
+    ],
+    cta: "Submit resume",
+    doneTitle: "Resume received",
+    doneText: "We'll reach out when we find a role that fits your profile.",
+    templateEnv: "VITE_EMAILJS_TEMPLATE_ID_SEEKER",
+    fields: [
+      { name: "from_name", label: "Full name", req: true },
+      { name: "from_email", label: "Email", type: "email", half: true, req: true },
+      { name: "phone", label: "Phone", type: "tel", half: true, req: true },
+      { name: "location", label: "Current location", half: true },
+      { name: "skills", label: "Skills / role", half: true, req: true },
+      { name: "resume", label: "Resume", type: "file", req: true },
+      { name: "message", label: "Tell us about your experience", type: "textarea" },
+    ],
+  },
 };
 
-const INITIAL_RESUME = {
-  name: "",
-  email: "",
-  phone: "",
-  location: "",
-  skills: "",
-  message: "",
-};
+function FileDrop({ field }) {
+  const [file, setFile] = useState(null);
+  const [over, setOver] = useState(false);
+  const inputRef = useRef(null);
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-function validateHire(v) {
-  const e = {};
-  if (!v.company.trim()) e.company = "Required";
-  if (!v.contactPerson.trim()) e.contactPerson = "Required";
-  if (!v.email.trim() || !EMAIL_RE.test(v.email.trim())) e.email = "Valid email required";
-  if (!v.phone.trim()) e.phone = "Required";
-  if (!v.role.trim()) e.role = "Required";
-  return e;
-}
-
-function validateResume(v) {
-  const e = {};
-  if (!v.name.trim()) e.name = "Required";
-  if (!v.email.trim() || !EMAIL_RE.test(v.email.trim())) e.email = "Valid email required";
-  if (!v.phone.trim()) e.phone = "Required";
-  return e;
-}
-
-export default function Careers() {
-  const [hireForm, setHireForm] = useState(INITIAL_HIRE);
-  const [hireErrors, setHireErrors] = useState({});
-  const [hireSuccess, setHireSuccess] = useState(false);
-  const [hireSubmitting, setHireSubmitting] = useState(false);
-
-  const [resumeForm, setResumeForm] = useState(INITIAL_RESUME);
-  const [resumeErrors, setResumeErrors] = useState({});
-  const [resumeSuccess, setResumeSuccess] = useState(false);
-  const [resumeSubmitting, setResumeSubmitting] = useState(false);
-
-  const handleHireChange = (e) => {
-    const { name, value } = e.target;
-    setHireForm((v) => ({ ...v, [name]: value }));
-  };
-
-  const handleResumeChange = (e) => {
-    const { name, value } = e.target;
-    setResumeForm((v) => ({ ...v, [name]: value }));
-  };
-
-  const submitHire = async (e) => {
-    e.preventDefault();
-    const errors = validateHire(hireForm);
-    setHireErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-    setHireSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1400));
-    setHireSubmitting(false);
-    setHireSuccess(true);
-    setHireForm(INITIAL_HIRE);
-  };
-
-  const submitResume = async (e) => {
-    e.preventDefault();
-    const errors = validateResume(resumeForm);
-    setResumeErrors(errors);
-    if (Object.keys(errors).length > 0) return;
-    setResumeSubmitting(true);
-    await new Promise((r) => setTimeout(r, 1400));
-    setResumeSubmitting(false);
-    setResumeSuccess(true);
-    setResumeForm(INITIAL_RESUME);
+  const pick = (f) => {
+    if (!f) return;
+    if (f.size > 2 * 1024 * 1024) {
+      inputRef.current.value = "";
+      setFile(null);
+      inputRef.current.setCustomValidity("File must be under 2 MB");
+      inputRef.current.reportValidity();
+      return;
+    }
+    inputRef.current.setCustomValidity("");
+    setFile(f);
   };
 
   return (
-    <div className="page-fade">
-      <section className="page-header">
-        <div className="container">
-          <Reveal>
-            <h1 className="page-header__title">Careers</h1>
-            <p className="page-header__subtitle">
-              Whether you're hiring or looking for your next opportunity, we're here to help.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+    <label
+      className={`cr-drop ${over ? "is-over" : ""} ${file ? "has-file" : ""}`}
+      onDragOver={(e) => { e.preventDefault(); setOver(true); }}
+      onDragLeave={() => setOver(false)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setOver(false);
+        const f = e.dataTransfer.files[0];
+        if (f) {
+          const dt = new DataTransfer();
+          dt.items.add(f);
+          inputRef.current.files = dt.files;
+          pick(f);
+          inputRef.current.dispatchEvent(new Event("change", { bubbles: true }));
+        }
+      }}
+    >
+      <input
+        ref={inputRef}
+        type="file"
+        name={field.name}
+        accept=".pdf,.doc,.docx"
+        required={field.req}
+        onChange={(e) => pick(e.target.files[0])}
+      />
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        {file ? <path d="M5 13l4 4L19 7" /> : <path d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" />}
+      </svg>
+      <span className="cr-drop-text">
+        <strong>{file ? file.name : "Drop your resume here"}</strong>
+        <small>{file ? "Click to replace" : "or click to browse (PDF, DOC, DOCX)"}</small>
+      </span>
+    </label>
+  );
+}
 
-      <section className="section section--white">
-        <div className="container">
-          <div className="careers-split">
-            {/* Employer form */}
-            <Reveal variant="left" className="careers-form-section">
-              <h3>{siteConfig.employerJobSeeker.employer.title}</h3>
-              <p>{siteConfig.employerJobSeeker.employer.text}</p>
+function Field({ f }) {
+  if (f.type === "file") return <div className="cr-f full"><FileDrop field={f} /></div>;
+  const cls = `cr-f ${f.half ? "half" : "full"}`;
+  const common = { id: f.name, name: f.name, required: f.req, placeholder: " " };
 
-              {hireSuccess ? (
-                <div className="form__success" role="alert">
-                  <div className="form__success-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="11" fill="var(--green-100)" />
-                      <path d="M7 12l3.5 3.5L17 8" stroke="var(--green-700)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <h3>Thank you! Our team will contact you soon.</h3>
-                  <button className="btn btn--outline-dark" onClick={() => setHireSuccess(false)}>
-                    Submit another requirement
-                  </button>
-                </div>
-              ) : (
-                <form className="form" onSubmit={submitHire} noValidate>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="hire-company">Company name</label>
-                      <input id="hire-company" name="company" type="text" value={hireForm.company} onChange={handleHireChange} placeholder="Company name" className={hireErrors.company ? "is-error" : ""} />
-                      {hireErrors.company && <span className="form__error">{hireErrors.company}</span>}
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="hire-contact">Contact person</label>
-                      <input id="hire-contact" name="contactPerson" type="text" value={hireForm.contactPerson} onChange={handleHireChange} placeholder="Contact person" className={hireErrors.contactPerson ? "is-error" : ""} />
-                      {hireErrors.contactPerson && <span className="form__error">{hireErrors.contactPerson}</span>}
-                    </div>
-                  </div>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="hire-email">Email</label>
-                      <input id="hire-email" name="email" type="email" value={hireForm.email} onChange={handleHireChange} placeholder="you@example.com" className={hireErrors.email ? "is-error" : ""} />
-                      {hireErrors.email && <span className="form__error">{hireErrors.email}</span>}
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="hire-phone">Phone</label>
-                      <input id="hire-phone" name="phone" type="tel" value={hireForm.phone} onChange={handleHireChange} placeholder={siteConfig.contact.phone} className={hireErrors.phone ? "is-error" : ""} />
-                      {hireErrors.phone && <span className="form__error">{hireErrors.phone}</span>}
-                    </div>
-                  </div>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="hire-role">Role</label>
-                      <input id="hire-role" name="role" type="text" value={hireForm.role} onChange={handleHireChange} placeholder="Role to fill" className={hireErrors.role ? "is-error" : ""} />
-                      {hireErrors.role && <span className="form__error">{hireErrors.role}</span>}
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="hire-positions">Number of positions</label>
-                      <input id="hire-positions" name="positions" type="number" value={hireForm.positions} onChange={handleHireChange} placeholder="1" />
-                    </div>
-                  </div>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="hire-location">Location</label>
-                      <input id="hire-location" name="location" type="text" value={hireForm.location} onChange={handleHireChange} placeholder="Job location" />
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="hire-type">Hiring type</label>
-                      <select id="hire-type" name="hiringType" value={hireForm.hiringType} onChange={handleHireChange}>
-                        <option value="">Select type</option>
-                        <option value="permanent">Permanent</option>
-                        <option value="contract">Contract</option>
-                        <option value="contract-to-hire">Contract-to-Hire</option>
-                        <option value="bulk">Bulk</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="form__field">
-                    <label htmlFor="hire-details">Details</label>
-                    <textarea id="hire-details" name="details" rows="4" value={hireForm.details} onChange={handleHireChange} placeholder="Additional details about the role..." />
-                  </div>
-                  <button type="submit" className="btn btn--primary btn--lg form__submit" disabled={hireSubmitting}>
-                    {hireSubmitting ? (
-                      <><span className="form__spinner" aria-hidden="true" /> Sending...</>
-                    ) : (
-                      "Submit a Hiring Requirement"
-                    )}
-                  </button>
-                </form>
-              )}
-            </Reveal>
-
-            {/* Job seeker form */}
-            <Reveal variant="right" delay={120} className="careers-form-section">
-              <h3>{siteConfig.employerJobSeeker.jobSeeker.title}</h3>
-              <p>{siteConfig.employerJobSeeker.jobSeeker.text}</p>
-
-              {resumeSuccess ? (
-                <div className="form__success" role="alert">
-                  <div className="form__success-icon">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="11" fill="var(--green-100)" />
-                      <path d="M7 12l3.5 3.5L17 8" stroke="var(--green-700)" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                  </div>
-                  <h3>Thank you! Our team will contact you soon.</h3>
-                  <button className="btn btn--outline-dark" onClick={() => setResumeSuccess(false)}>
-                    Submit another resume
-                  </button>
-                </div>
-              ) : (
-                <form className="form" onSubmit={submitResume} noValidate>
-                  <div className="form__field">
-                    <label htmlFor="resume-name">Full name</label>
-                    <input id="resume-name" name="name" type="text" value={resumeForm.name} onChange={handleResumeChange} placeholder="Your full name" className={resumeErrors.name ? "is-error" : ""} />
-                    {resumeErrors.name && <span className="form__error">{resumeErrors.name}</span>}
-                  </div>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="resume-email">Email</label>
-                      <input id="resume-email" name="email" type="email" value={resumeForm.email} onChange={handleResumeChange} placeholder="you@example.com" className={resumeErrors.email ? "is-error" : ""} />
-                      {resumeErrors.email && <span className="form__error">{resumeErrors.email}</span>}
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="resume-phone">Phone</label>
-                      <input id="resume-phone" name="phone" type="tel" value={resumeForm.phone} onChange={handleResumeChange} placeholder={siteConfig.contact.phone} className={resumeErrors.phone ? "is-error" : ""} />
-                      {resumeErrors.phone && <span className="form__error">{resumeErrors.phone}</span>}
-                    </div>
-                  </div>
-                  <div className="form__row">
-                    <div className="form__field">
-                      <label htmlFor="resume-location">Current location</label>
-                      <input id="resume-location" name="location" type="text" value={resumeForm.location} onChange={handleResumeChange} placeholder="City" />
-                    </div>
-                    <div className="form__field">
-                      <label htmlFor="resume-skills">Skills / Role</label>
-                      <input id="resume-skills" name="skills" type="text" value={resumeForm.skills} onChange={handleResumeChange} placeholder="e.g. Java Developer" />
-                    </div>
-                  </div>
-                  <div className="form__field">
-                    <label htmlFor="resume-upload">Resume (PDF/DOC)</label>
-                    <input id="resume-upload" name="resume" type="file" accept=".pdf,.doc,.docx" style={{ padding: "10px 14px", border: "1.5px solid var(--neutral-300)", borderRadius: "var(--radius-sm)", background: "#fff" }} />
-                  </div>
-                  <div className="form__field">
-                    <label htmlFor="resume-message">Message</label>
-                    <textarea id="resume-message" name="message" rows="3" value={resumeForm.message} onChange={handleResumeChange} placeholder="Tell us about your experience..." />
-                  </div>
-                  <button type="submit" className="btn btn--primary btn--lg form__submit" disabled={resumeSubmitting}>
-                    {resumeSubmitting ? (
-                      <><span className="form__spinner" aria-hidden="true" /> Sending...</>
-                    ) : (
-                      "Submit Your Resume"
-                    )}
-                  </button>
-                </form>
-              )}
-            </Reveal>
-          </div>
-        </div>
-      </section>
+  return (
+    <div className={cls}>
+      {f.type === "select" ? (
+        <select {...common} defaultValue="" className="is-select">
+          <option value="" disabled hidden></option>
+          {f.options.map((o) => <option key={o}>{o}</option>)}
+        </select>
+      ) : f.type === "textarea" ? (
+        <textarea {...common} rows={4} />
+      ) : (
+        <input {...common} type={f.type || "text"} min={f.min} />
+      )}
+      <label htmlFor={f.name}>{f.label}</label>
     </div>
+  );
+}
+
+export default function Careers() {
+  const [mode, setMode] = useState("employer");
+  const [progress, setProgress] = useState(0);
+  const [status, setStatus] = useState("idle"); // idle | sending | done | error
+  const formRef = useRef(null);
+  const m = MODES[mode];
+
+  const switchMode = (next) => {
+    if (next === mode) return;
+    setMode(next);
+    setProgress(0);
+    setStatus("idle");
+  };
+
+  const updateProgress = () => {
+    const els = [...formRef.current.elements].filter((el) => el.required);
+    const filled = els.filter((el) => (el.type === "file" ? el.files.length : el.value.trim())).length;
+    setProgress(els.length ? Math.round((filled / els.length) * 100) : 0);
+  };
+
+  const submit = (e) => {
+    e.preventDefault();
+    setStatus("sending");
+
+    emailjs
+      .sendForm(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env[m.templateEnv] || import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+        formRef.current,
+        { publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY }
+      )
+      .then(() => setStatus("done"))
+      .catch(() => setStatus("error"));
+  };
+
+  return (
+    <section className="cr">
+      <header className="cr-head">
+        <h1>Hire well. Get hired well.</h1>
+        <p>Whichever side of the table you're on, we'll take it from here.</p>
+
+        <div className="cr-switch" role="tablist" aria-label="Choose your path">
+          <span className="cr-thumb" style={{ transform: `translateX(${mode === "employer" ? 0 : 100}%)` }} />
+          {Object.entries(MODES).map(([key, v]) => (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={mode === key}
+              className={mode === key ? "on" : ""}
+              onClick={() => switchMode(key)}
+              type="button"
+            >
+              {v.tab}
+            </button>
+          ))}
+        </div>
+      </header>
+
+      <div className="cr-card">
+        <aside className="cr-side">
+          <div key={mode} className="cr-swap">
+            <h2>{m.title}</h2>
+            <p>{m.blurb}</p>
+
+            <ol className="cr-rail" style={{ "--p": `${status === "done" ? 100 : progress}%` }}>
+              {m.steps.map(([t, d]) => (
+                <li key={t}>
+                  <strong>{t}</strong>
+                  <span>{d}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="cr-247">
+            <i aria-hidden="true" />
+            Reach us anytime on <a href="tel:+918147394287">+91 81473 94287</a>
+          </div>
+        </aside>
+
+        <div className="cr-main">
+          <div className="cr-bar" aria-hidden="true"><i style={{ width: `${status === "done" ? 100 : progress}%` }} /></div>
+
+          {status === "done" ? (
+            <div className="cr-done">
+              <svg viewBox="0 0 52 52" width="72" height="72" aria-hidden="true">
+                <circle cx="26" cy="26" r="24" />
+                <path d="M15 27l8 8 14-16" />
+              </svg>
+              <h3>{m.doneTitle}</h3>
+              <p>{m.doneText}</p>
+              <button type="button" className="cr-btn ghost" onClick={() => { setStatus("idle"); setProgress(0); }}>
+                Send another
+              </button>
+            </div>
+          ) : (
+            <form key={mode} ref={formRef} className="cr-form cr-swap" onSubmit={submit} onChange={updateProgress}>
+              <input type="hidden" name="form_type" value={mode === "employer" ? "Hiring requirement" : "Job application"} />
+              <div className="cr-grid">
+                {m.fields.map((f) => <Field key={f.name} f={f} />)}
+              </div>
+
+              {status === "error" && (
+                <p className="cr-error" role="alert">
+                  Couldn't send that. Check your connection and try again, or email hr@roottooinnovation.com.
+                </p>
+              )}
+
+              <button className="cr-btn" type="submit" disabled={status === "sending"}>
+                <span>{status === "sending" ? "Sending…" : m.cta}</span>
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </section>
   );
 }

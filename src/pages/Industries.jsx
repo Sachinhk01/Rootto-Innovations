@@ -1,74 +1,100 @@
 import { Link } from "react-router-dom";
-import { siteConfig } from "../data/siteData";
-import Reveal from "../components/Reveal";
-import Marquee from "../components/Marquee";
+import "./Industries.css";
 
-const ArrowIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const INDUSTRIES = [
+  {
+    name: "Information technology",
+    line: "Developers, testers, analysts and IT project teams, hired fast and screened for real skills.",
+    tags: ["Software engineering", "QA and testing", "Data and analytics", "IT support"],
+    size: "lead",
+  },
+  {
+    name: "Manufacturing and engineering",
+    line: "Skilled and supervisory talent for plants and production teams.",
+    tags: ["Production", "Quality", "Maintenance"],
+  },
+  {
+    name: "Healthcare and life sciences",
+    line: "Administrative and support teams for clinics, labs and healthcare providers.",
+    tags: ["Operations", "Admin", "Support"],
+  },
+  {
+    name: "Banking, finance and insurance",
+    line: "Finance, operations and compliance professionals, plus payroll and accounting support.",
+    tags: ["Accounts", "Compliance", "Operations", "Payroll"],
+    size: "wide",
+  },
+  { name: "Retail and e-commerce", line: "Store, sales and back-office teams.", tags: ["Sales", "Operations"] },
+  { name: "Education and training", line: "Trainers, coordinators and admin staff.", tags: ["Training", "Admin"] },
+  { name: "Logistics and supply chain", line: "Coordination and operations talent.", tags: ["Operations", "Planning"] },
+  { name: "Startups and SMEs", line: "Flexible hiring, HR and accounts without the overhead.", tags: ["Hiring", "HR", "Accounts"] },
+];
 
-const IndustryIcon = ({ idx }) => {
-  const icons = [
-    <path key="0" d="M4 6h16v10H4zM8 20h8M12 16v4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />,
-    <path key="1" d="M12 2L2 7l10 5 10-5-10-5zM2 7v10l10 5 10-5V7" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />,
-    <path key="2" d="M4 4h16v6H4zM4 14h16v6H4z" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="3" d="M3 9h18l-2 10H5zM3 9l9-6 9 6" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />,
-    <path key="4" d="M3 21h18M5 21V8l7-5 7 5v13M9 21v-6h6v6" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="5" d="M12 2C8 7 6 10 6 14a6 6 0 0012 0c0-4-2-7-6-12z" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="6" d="M12 3C8 7 6 10 6 14a6 6 0 0012 0c0-4-2-7-6-11z" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="7" d="M5 12a7 7 0 0114 0M5 12a7 7 0 0014 0M5 12h14" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="8" d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-6h6v6" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="9" d="M12 21s-7-4.5-7-10a4 4 0 017-2.6A4 4 0 0119 11c0 5.5-7 10-7 10z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />,
-    <path key="10" d="M4 6h16v12H4zM4 7l8 6 8-6" stroke="currentColor" strokeWidth="1.7" />,
-    <path key="11" d="M3 21h18M5 21V10l7-5 7 5v11" stroke="currentColor" strokeWidth="1.7" />,
-  ];
-  return <svg width="24" height="24" viewBox="0 0 24 24" fill="none">{icons[idx % icons.length]}</svg>;
-};
+const APPROACH = [
+  ["Sector-aware screening", "We assess candidates against what your industry actually needs, not a generic checklist."],
+  ["One partner, many functions", "Hiring, payroll, HR and compliance can sit with the same team."],
+  ["Flexible engagement", "Permanent, contract or project-based, whichever fits the work."],
+];
 
 export default function Industries() {
-  return (
-    <div className="page-fade">
-      <section className="page-header">
-        <div className="container">
-          <Reveal>
-            <h1 className="page-header__title">Industries We Serve</h1>
-            <p className="page-header__subtitle">
-              Built for businesses at every stage. We support startups, SMEs, and enterprises across
-              diverse industries with flexible solutions that scale.
-            </p>
-          </Reveal>
-        </div>
-      </section>
+  const names = INDUSTRIES.map((i) => i.name);
 
-      <section className="section section--white">
-        <div className="container">
-          <div className="industry-grid">
-            {siteConfig.industries.map((industry, idx) => (
-              <Reveal key={industry.name} delay={idx * 80} className="industry-card">
-                <div className="industry-card__icon">
-                  <IndustryIcon idx={idx} />
-                </div>
-                <h3 className="industry-card__title">{industry.name}</h3>
-                <p className="industry-card__desc">{industry.line}</p>
-              </Reveal>
-            ))}
+  return (
+    <main className="in">
+      <section className="in-hero">
+        <div className="in-wrap">
+          <h1>Different industries. The same standard of delivery.</h1>
+          <p>We support businesses across sectors with talent, technology and back-office services.</p>
+        </div>
+
+        <div className="in-marquee" aria-hidden="true">
+          <div>
+            {[...names, ...names].map((n, i) => <span key={i}>{n}</span>)}
           </div>
         </div>
       </section>
 
-      <Marquee />
+      <section className="in-wrap in-grid-sec">
+        <h2 className="in-h2">Where we work</h2>
+        <div className="in-grid">
+          {INDUSTRIES.map((x, i) => (
+            <article key={x.name} className={`in-tile ${x.size || ""} t${i % 4}`}>
+              <h3>{x.name}</h3>
+              <p>{x.line}</p>
+              <ul>
+                {x.tags.map((t) => <li key={t}>{t}</li>)}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <p className="in-note">
+          Don't see your industry? <Link to="/contact">Tell us what you need.</Link> We work with businesses of all kinds.
+        </p>
+      </section>
 
-      <section className="cta-banner">
-        <div className="container cta-banner__inner">
-          <Reveal>
-            <h2 className="cta-banner__title">Looking for industry-specific support?</h2>
-            <p className="cta-banner__text">Let's discuss how we can help your business grow.</p>
-            <Link to="/contact" className="btn btn--primary btn--lg">Request a Consultation</Link>
-          </Reveal>
+      <section className="in-wrap in-approach">
+        <h2 className="in-h2">What stays the same in every sector</h2>
+        <div>
+          {APPROACH.map(([t, d]) => (
+            <div key={t}>
+              <h3>{t}</h3>
+              <p>{d}</p>
+            </div>
+          ))}
         </div>
       </section>
-    </div>
+
+      <section className="in-wrap">
+        <div className="in-cta">
+          <h2>Hiring or outsourcing in your sector?</h2>
+          <div>
+            <Link to="/contact" className="in-btn solid">Send an enquiry</Link>
+            <a href="https://wa.me/918147394287" target="_blank" rel="noopener noreferrer" className="in-btn line">
+              Chat on WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

@@ -69,6 +69,14 @@ export default function Contact() {
                     </a>
                   </div>
                 </div>
+
+                <div className="avail-247">
+                  <span className="avail-dot" aria-hidden="true" />
+                  <div>
+                    <strong>Contact available 24/7</strong>
+                    <p>Send your enquiry anytime on WhatsApp, phone or email. We'll get back to you promptly.</p>
+                  </div>
+                </div>
               </div>
 
               <div className="contact__map" style={{ marginTop: "24px" }}>

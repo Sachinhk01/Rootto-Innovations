@@ -34,7 +34,7 @@ export default function ServiceDetail() {
 
       <section className="section section--white">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 380px", gap: "48px", alignItems: "start" }}>
+          <div className="service-detail__layout">
             {/* Main content */}
             <div>
               <Reveal>
@@ -102,7 +102,7 @@ export default function ServiceDetail() {
             </div>
 
             {/* Sidebar: CTA + Enquiry form */}
-            <aside>
+            <aside className="service-detail__sidebar">
               <Reveal variant="right">
                 <div style={{ background: "var(--bg-offwhite)", border: "1px solid var(--neutral-200)", borderRadius: "var(--radius-lg)", padding: "28px 24px", marginBottom: "24px" }}>
                   <h3 style={{ fontSize: "1.1rem", marginBottom: "10px" }}>{service.cta}</h3>

@@ -1,0 +1,216 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap");
+
+.cr {
+  --g900: #0b2a1b;
+  --g800: #0f3a26;
+  --g700: #067a46;
+  --g100: #e8f4ed;
+  --mint: #8de3b0;
+  --ink: #12231b;
+  --muted: #5a6b62;
+  --line: #d8e3dc;
+  --danger: #b3261e;
+  --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+  color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* ---------- heading + switch ---------- */
+.cr-head { text-align: center; margin-bottom: 36px; }
+.cr-head h1 {
+  font: 700 clamp(30px, 4.6vw, 52px)/1.05 var(--display);
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+.cr-head p { margin: 0 auto 28px; max-width: 46ch; color: var(--muted); font-size: 17px; line-height: 1.55; }
+
+.cr-switch {
+  position: relative; display: inline-grid; grid-template-columns: 1fr 1fr;
+  padding: 5px; border-radius: 999px; background: var(--g100); border: 1px solid var(--line);
+}
+.cr-switch button {
+  position: relative; z-index: 1; border: 0; background: none; cursor: pointer;
+  padding: 12px 26px; min-width: 168px; border-radius: 999px;
+  font: 600 15px var(--display); color: var(--g800); transition: color .35s;
+}
+.cr-switch button.on { color: #fff; }
+.cr-thumb {
+  position: absolute; top: 5px; bottom: 5px; left: 5px; width: calc(50% - 5px);
+  border-radius: 999px; background: var(--g700);
+  box-shadow: 0 6px 16px rgba(6, 122, 70, .35);
+  transition: transform .5s cubic-bezier(.65, 0, .25, 1);
+}
+
+/* ---------- card ---------- */
+.cr-card {
+  display: grid; grid-template-columns: 5fr 7fr; min-height: 560px;
+  border-radius: 28px; overflow: hidden; background: #fff;
+  border: 1px solid var(--line);
+  box-shadow: 0 30px 60px -30px rgba(11, 42, 27, .35);
+}
+
+/* ---------- dark side ---------- */
+.cr-side {
+  position: relative; display: flex; flex-direction: column; justify-content: space-between;
+  padding: 44px 40px; color: #e6f3ec; overflow: hidden;
+  background:
+    radial-gradient(circle at 110% -10%, rgba(141, 227, 176, .22), transparent 45%),
+    linear-gradient(160deg, var(--g800), var(--g900));
+}
+.cr-side::after {
+  content: ""; position: absolute; width: 380px; height: 380px; right: -190px; bottom: -190px;
+  border-radius: 50%; border: 1px solid rgba(141, 227, 176, .25);
+  box-shadow: 0 0 0 46px rgba(141, 227, 176, .05), 0 0 0 92px rgba(141, 227, 176, .03);
+  pointer-events: none;
+}
+.cr-side h2 { font: 700 28px/1.15 var(--display); letter-spacing: -0.02em; margin: 0 0 12px; color: #fff; }
+.cr-side p { margin: 0 0 34px; line-height: 1.6; color: #b7d3c3; max-width: 38ch; }
+
+/* progress rail: fills as the form is completed */
+.cr-rail {
+  --p: 0%;
+  position: relative; list-style: none; margin: 0; padding: 0 0 0 30px; display: grid; gap: 26px;
+}
+.cr-rail::before, .cr-rail::after {
+  content: ""; position: absolute; left: 7px; top: 6px; width: 2px; border-radius: 2px;
+}
+.cr-rail::before { bottom: 6px; background: rgba(255, 255, 255, .16); }
+.cr-rail::after {
+  height: calc((100% - 12px) * var(--p) / 100%);
+  background: var(--mint); box-shadow: 0 0 12px var(--mint);
+  transition: height .6s cubic-bezier(.3, .8, .3, 1);
+}
+.cr-rail li { position: relative; display: grid; gap: 2px; }
+.cr-rail li::before {
+  content: ""; position: absolute; left: -30px; top: 3px; width: 16px; height: 16px;
+  border-radius: 50%; background: var(--g900); border: 2px solid rgba(255, 255, 255, .3);
+}
+.cr-rail li strong { color: #fff; font-weight: 600; font-size: 15px; }
+.cr-rail li span { font-size: 13.5px; color: #9fc0ae; }
+
+.cr-247 {
+  position: relative; z-index: 1; display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: #b7d3c3; margin-top: 36px;
+}
+.cr-247 a { color: #fff; font-weight: 600; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.35); }
+.cr-247 i {
+  width: 9px; height: 9px; border-radius: 50%; background: #3fe08a; flex: none;
+  animation: cr-ping 2s infinite;
+}
+@keyframes cr-ping {
+  0% { box-shadow: 0 0 0 0 rgba(63, 224, 138, .6); }
+  70%, 100% { box-shadow: 0 0 0 10px rgba(63, 224, 138, 0); }
+}
+
+/* ---------- form side ---------- */
+.cr-main { position: relative; padding: 44px 44px 40px; background: #fbfdfc; }
+.cr-bar { position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--g100); }
+.cr-bar i { display: block; height: 100%; background: var(--g700); transition: width .5s cubic-bezier(.3, .8, .3, 1); }
+
+.cr-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px 18px; }
+.cr-f.full { grid-column: 1 / -1; }
+
+/* floating labels */
+.cr-f { position: relative; }
+.cr-f input, .cr-f select, .cr-f textarea {
+  width: 100%; box-sizing: border-box; padding: 24px 14px 8px;
+  font: 500 15px "Inter", system-ui, sans-serif; color: var(--ink);
+  background: #fff; border: 1.5px solid var(--line); border-radius: 12px;
+  transition: border-color .2s, box-shadow .2s;
+  appearance: none; -webkit-appearance: none;
+}
+.cr-f textarea { resize: vertical; min-height: 110px; }
+.cr-f select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%235a6b62' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M1 1l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px;
+}
+.cr-f label {
+  position: absolute; left: 15px; top: 18px; font-size: 15px; color: var(--muted);
+  pointer-events: none; transform-origin: left top;
+  transition: transform .2s ease, color .2s;
+}
+.cr-f input:focus + label, .cr-f textarea:focus + label, .cr-f select:focus + label,
+.cr-f input:not(:placeholder-shown) + label, .cr-f textarea:not(:placeholder-shown) + label,
+.cr-f select:valid + label {
+  transform: translateY(-11px) scale(.78); color: var(--g700); font-weight: 600;
+}
+.cr-f select:required:invalid { color: transparent; }
+.cr-f select:not(:required) { color: var(--ink); }
+.cr-f input:focus, .cr-f select:focus, .cr-f textarea:focus {
+  outline: none; border-color: var(--g700); box-shadow: 0 0 0 4px rgba(6, 122, 70, .12);
+}
+.cr-f input:user-invalid, .cr-f textarea:user-invalid { border-color: var(--danger); }
+
+/* resume drop zone */
+.cr-drop {
+  display: flex; align-items: center; gap: 16px; padding: 18px 20px; cursor: pointer;
+  border: 1.5px dashed #9dbcab; border-radius: 14px; background: #fff; color: var(--g700);
+  transition: background .25s, border-color .25s, transform .25s;
+}
+.cr-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.cr-drop:focus-within { box-shadow: 0 0 0 4px rgba(6, 122, 70, .15); }
+.cr-drop:hover, .cr-drop.is-over { background: var(--g100); border-color: var(--g700); }
+.cr-drop.is-over { transform: scale(1.015); }
+.cr-drop.has-file { border-style: solid; border-color: var(--g700); background: var(--g100); }
+.cr-drop svg { flex: none; padding: 10px; box-sizing: content-box; border-radius: 12px; background: var(--g100); }
+.cr-drop.has-file svg { background: var(--g700); color: #fff; }
+.cr-drop-text { display: grid; gap: 2px; min-width: 0; }
+.cr-drop-text strong { color: var(--ink); font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cr-drop-text small { color: var(--muted); font-size: 13px; }
+
+/* button */
+.cr-btn {
+  position: relative; overflow: hidden; width: 100%; margin-top: 26px; padding: 16px 24px;
+  border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--g700); color: #fff; font: 600 16px var(--display);
+  box-shadow: 0 12px 24px -10px rgba(6, 122, 70, .7);
+  transition: transform .2s, box-shadow .2s;
+}
+.cr-btn::before {
+  content: ""; position: absolute; inset: 0; transform: translateX(-101%);
+  background: linear-gradient(100deg, transparent 20%, rgba(255,255,255,.25), transparent 80%);
+  transition: transform .7s;
+}
+.cr-btn:hover:not(:disabled)::before { transform: translateX(101%); }
+.cr-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 16px 28px -10px rgba(6, 122, 70, .8); }
+.cr-btn:active:not(:disabled) { transform: translateY(0); }
+.cr-btn:focus-visible, .cr-switch button:focus-visible { outline: 3px solid var(--mint); outline-offset: 3px; }
+.cr-btn:disabled { opacity: .75; cursor: progress; }
+.cr-btn span { position: relative; }
+.cr-btn.ghost { width: auto; margin-top: 8px; background: none; color: var(--g700); border: 1.5px solid var(--g700); box-shadow: none; }
+
+.cr-error { margin: 18px 0 0; color: var(--danger); font-size: 14px; }
+
+/* success */
+.cr-done { display: grid; justify-items: center; align-content: center; text-align: center; gap: 8px; min-height: 440px; }
+.cr-done h3 { font: 700 26px var(--display); margin: 14px 0 0; letter-spacing: -0.02em; }
+.cr-done p { margin: 0 0 14px; color: var(--muted); max-width: 36ch; line-height: 1.55; }
+.cr-done circle { fill: var(--g100); stroke: var(--g700); stroke-width: 2; stroke-dasharray: 152; stroke-dashoffset: 152; animation: cr-draw .7s ease forwards; }
+.cr-done path { fill: none; stroke: var(--g700); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 40; animation: cr-draw .45s .55s ease forwards; }
+@keyframes cr-draw { to { stroke-dashoffset: 0; } }
+
+/* mode change */
+.cr-swap { animation: cr-swap .5s cubic-bezier(.3, .8, .3, 1); }
+@keyframes cr-swap { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+
+/* ---------- responsive ---------- */
+@media (max-width: 860px) {
+  .cr-card { grid-template-columns: 1fr; }
+  .cr-side { padding: 32px 26px; }
+  .cr-side p { margin-bottom: 24px; }
+  .cr-main { padding: 32px 22px; }
+}
+@media (max-width: 560px) {
+  .cr { padding: 36px 16px 56px; }
+  .cr-grid { grid-template-columns: 1fr; }
+  .cr-switch { display: grid; width: 100%; }
+  .cr-switch button { min-width: 0; padding: 12px 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr *, .cr *::before, .cr *::after { animation: none !important; transition: none !important; }
+  .cr-done circle, .cr-done path { stroke-dashoffset: 0; }
+}

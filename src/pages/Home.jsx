@@ -40,7 +40,7 @@ export default function Home() {
       {/* ── 4.2 Who we are ────────────────────────────────────── */}
       <section className="section section--white">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px", alignItems: "center" }}>
+          <div className="home-about__grid">
             <Reveal variant="left">
               <span className="eyebrow">Who we are</span>
               <h2 className="section__title" style={{ textAlign: "left" }}>We make business growth simpler.</h2>
@@ -82,33 +82,16 @@ export default function Home() {
             </Reveal>
 
             <Reveal variant="right" delay={150}>
-              <div style={{ position: "relative" }}>
+              <div className="home-about__visual">
                 <img
                   src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=900"
                   alt="Roottoo Innovation team collaboration"
-                  style={{ width: "100%", height: "460px", objectFit: "cover", borderRadius: "var(--radius-lg)", boxShadow: "var(--shadow-lg)" }}
+                  className="home-about__image"
                   loading="lazy"
                 />
-                <div style={{
-                  position: "absolute",
-                  right: "-20px",
-                  bottom: "-20px",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "140px",
-                  height: "140px",
-                  borderRadius: "50%",
-                  background: "var(--gradient-cta)",
-                  color: "#fff",
-                  textAlign: "center",
-                  boxShadow: "var(--shadow-xl)",
-                  border: "6px solid #fff",
-                  padding: "12px",
-                }}>
-                  <span style={{ fontFamily: "var(--font-heading)", fontSize: "2rem", fontWeight: 800, lineHeight: 1 }}>2021</span>
-                  <span style={{ fontSize: ".72rem", fontWeight: 600, marginTop: "4px" }}>Founded</span>
+                <div className="home-about__badge">
+                  <span className="home-about__badge-year">2021</span>
+                  <span className="home-about__badge-label">Founded</span>
                 </div>
               </div>
             </Reveal>
